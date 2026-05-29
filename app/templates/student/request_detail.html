@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Заявка №{{ req.id }}</h1>
+<div class="card"><h2>{{ req.title }}</h2><p>{{ req.description }}</p><p>Статус: <span class="badge">{{ req.status }}</span></p></div>
+<h2>Комментарии</h2>{% for c in comments %}<div class="card"><b>{{ c.user.full_name }}</b><p>{{ c.comment_text }}</p></div>{% endfor %}
+{% endblock %}

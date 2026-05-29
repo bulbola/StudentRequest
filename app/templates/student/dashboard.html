@@ -1,0 +1,7 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Личный кабинет студента</h1>
+<a class="btn" href="{{ url_for('student.create_request') }}">Создать заявку</a>
+<table><tr><th>ID</th><th>Тема</th><th>Категория</th><th>Статус</th><th></th></tr>
+{% for r in requests %}<tr><td>{{ r.id }}</td><td>{{ r.title }}</td><td>{{ r.category.name }}</td><td><span class="badge">{{ r.status }}</span></td><td><a href="{{ url_for('student.request_detail', request_id=r.id) }}">Открыть</a></td></tr>{% endfor %}
+</table>
+{% endblock %}

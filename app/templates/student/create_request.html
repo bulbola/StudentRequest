@@ -1,0 +1,11 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Создание заявки</h1>
+<form method="post" enctype="multipart/form-data">
+<label>Категория</label><select name="category_id">{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+<label>Тема</label><input name="title" required>
+<label>Описание</label><textarea name="description" rows="6" required></textarea>
+<label>Приоритет</label><select name="priority"><option value="low">Низкий</option><option value="normal" selected>Обычный</option><option value="high">Высокий</option></select>
+<label>Файл</label><input name="file" type="file">
+<button class="btn" type="submit">Отправить</button>
+</form>
+{% endblock %}

@@ -1,0 +1,10 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Обработка заявки №{{ req.id }}</h1>
+<div class="card"><h2>{{ req.title }}</h2><p>{{ req.description }}</p><p>Текущий статус: {{ req.status }}</p></div>
+<form method="post">
+<label>Новый статус</label><select name="status"><option value="created">Создана</option><option value="in_progress">В работе</option><option value="need_info">Требует уточнения</option><option value="processed">Обработана</option><option value="closed">Закрыта</option><option value="rejected">Отклонена</option></select>
+<label>Комментарий</label><textarea name="comment_text" rows="5"></textarea>
+<button class="btn" type="submit">Сохранить</button>
+</form>
+<h2>История комментариев</h2>{% for c in comments %}<div class="card"><b>{{ c.user.full_name }}</b><p>{{ c.comment_text }}</p></div>{% endfor %}
+{% endblock %}

@@ -1,0 +1,5 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Панель администратора</h1>
+<div class="card">Пользователей: {{ stats.users }}</div><div class="card">Заявок: {{ stats.requests }}</div><div class="card">Создано: {{ stats.created }}</div><div class="card">Закрыто: {{ stats.closed }}</div>
+<p><a class="btn" href="{{ url_for('admin.users') }}">Пользователи</a> <a class="btn secondary" href="{{ url_for('admin.categories') }}">Категории</a> <a class="btn" href="{{ url_for('admin.export_requests') }}">Экспорт XLSX</a></p>
+{% endblock %}
