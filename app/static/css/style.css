@@ -237,3 +237,44 @@ th, td { border-bottom:1px solid #e5e7eb; padding:10px; text-align:left; }
     grid-template-columns: 1fr;
   }
 }
+.form-layout {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.form-layout form {
+  display: grid;
+  gap: 12px;
+}
+
+.form-layout label {
+  font-weight: 600;
+  color: #334155;
+}
+
+.form-layout input,
+.form-layout select,
+.form-layout textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+.form-layout textarea {
+  resize: vertical;
+}
+
+.info-card h3 {
+  margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+  .form-layout {
+    grid-template-columns: 1fr;
+  }
+}
