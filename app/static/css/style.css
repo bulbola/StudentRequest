@@ -314,3 +314,135 @@ th, td { border-bottom:1px solid #e5e7eb; padding:10px; text-align:left; }
     flex-direction: column;
   }
 }
+.detail-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-list div {
+  display: grid;
+  gap: 4px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-list span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.detail-list strong {
+  color: #1e293b;
+}
+
+.request-description {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  line-height: 1.6;
+}
+
+.comments-list {
+  display: grid;
+  gap: 12px;
+}
+
+.comment-card {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+  color: #334155;
+}
+
+.comment-meta span {
+  color: #64748b;
+  font-size: 13px;
+}
+.detail-list {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.detail-list div {
+  display: grid;
+  gap: 5px;
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.detail-list span {
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.detail-list strong {
+  color: #0f172a;
+  font-size: 15px;
+}
+
+.request-description {
+  padding: 16px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  color: #1e293b;
+  line-height: 1.6;
+}
+
+.comments-list {
+  display: grid;
+  gap: 12px;
+}
+
+.comment-card {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+}
+
+.comment-meta {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.comment-meta strong {
+  color: #1e293b;
+}
+
+.comment-meta span {
+  color: #64748b;
+  font-size: 13px;
+}
+
+.form-layout .card {
+  padding: 24px;
+}
+
+.form-layout select,
+.form-layout textarea {
+  background: #ffffff;
+  color: #1e293b;
+}
+
+.form-layout textarea::placeholder {
+  color: #94a3b8;
+}
