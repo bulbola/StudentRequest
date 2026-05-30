@@ -1,3 +1,50 @@
-{% extends 'base.html' %}{% block content %}
-<h1>Категории заявок</h1><table><tr><th>Название</th><th>Описание</th><th>Активна</th></tr>{% for c in categories %}<tr><td>{{ c.name }}</td><td>{{ c.description }}</td><td>{{ c.is_active }}</td></tr>{% endfor %}</table>
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Категории заявок</h1>
+    <p class="muted">
+      В данном разделе отображается справочник категорий, которые студент выбирает
+      при создании новой заявки.
+    </p>
+  </div>
+  <a class="btn secondary" href="{{ url_for('admin.dashboard') }}">Назад в админ-панель</a>
+</section>
+
+<section class="card">
+  <div class="table-header">
+    <div>
+      <h2>Справочник категорий</h2>
+      <p class="muted">
+        Категории позволяют классифицировать обращения и упростить их дальнейшую обработку.
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Название</th>
+      <th>Описание</th>
+      <th>Активна</th>
+    </tr>
+    {% for c in categories %}
+    <tr>
+      <td>{{ c.id }}</td>
+      <td>{{ c.name }}</td>
+      <td>{{ c.description }}</td>
+      <td>{% if c.is_active %}Да{% else %}Нет{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section class="card">
+  <h2>Использование категорий</h2>
+  <p>
+    Категории применяются для сортировки заявок, анализа обращений студентов
+    и формирования отчетности по направлениям работы структурного подразделения.
+  </p>
+</section>
 {% endblock %}

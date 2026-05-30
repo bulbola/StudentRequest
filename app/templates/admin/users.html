@@ -1,3 +1,52 @@
-{% extends 'base.html' %}{% block content %}
-<h1>Пользователи</h1><table><tr><th>ФИО</th><th>Email</th><th>Роль</th></tr>{% for u in users %}<tr><td>{{ u.full_name }}</td><td>{{ u.email }}</td><td>{{ u.role }}</td></tr>{% endfor %}</table>
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Пользователи системы</h1>
+    <p class="muted">
+      В данном разделе отображаются учетные записи пользователей StudentRequest
+      и назначенные им роли.
+    </p>
+  </div>
+  <a class="btn secondary" href="{{ url_for('admin.dashboard') }}">Назад в админ-панель</a>
+</section>
+
+<section class="card">
+  <div class="table-header">
+    <div>
+      <h2>Список пользователей</h2>
+      <p class="muted">
+        Пользователи разделены по ролям: студент, сотрудник подразделения и администратор.
+      </p>
+    </div>
+  </div>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>ФИО</th>
+      <th>Email</th>
+      <th>Роль</th>
+      <th>Активен</th>
+    </tr>
+    {% for u in users %}
+    <tr>
+      <td>{{ u.id }}</td>
+      <td>{{ u.full_name }}</td>
+      <td>{{ u.email }}</td>
+      <td><span class="badge">{{ u.role }}</span></td>
+      <td>{% if u.is_active %}Да{% else %}Нет{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+</section>
+
+<section class="card">
+  <h2>Назначение раздела</h2>
+  <p>
+    Раздел используется для контроля учетных записей и проверки распределения
+    ролей между участниками процесса обработки заявок.
+  </p>
+</section>
 {% endblock %}
