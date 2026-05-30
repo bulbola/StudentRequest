@@ -87,7 +87,8 @@ py -m venv .venv
 Для Windows PowerShell:
 
 ```powershell
-.venv\Scripts\activate
+.\.venv\Scripts\activate
+
 ```
 
 ### 3. Установить зависимости
