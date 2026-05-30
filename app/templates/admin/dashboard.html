@@ -1,5 +1,72 @@
-{% extends 'base.html' %}{% block content %}
-<h1>Панель администратора</h1>
-<div class="card">Пользователей: {{ stats.users }}</div><div class="card">Заявок: {{ stats.requests }}</div><div class="card">Создано: {{ stats.created }}</div><div class="card">Закрыто: {{ stats.closed }}</div>
-<p><a class="btn" href="{{ url_for('admin.users') }}">Пользователи</a> <a class="btn secondary" href="{{ url_for('admin.categories') }}">Категории</a> <a class="btn" href="{{ url_for('admin.export_requests') }}">Экспорт XLSX</a></p>
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Панель администратора</h1>
+    <p class="muted">
+      В этом разделе администратор контролирует пользователей, категории заявок,
+      отчетность и общие показатели работы системы.
+    </p>
+  </div>
+</section>
+
+<section class="stats-grid">
+  <div class="stat-card">
+    <span>Пользователей</span>
+    <strong>{{ stats.users }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Всего заявок</span>
+    <strong>{{ stats.requests }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Создано</span>
+    <strong>{{ stats.created }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Закрыто</span>
+    <strong>{{ stats.closed }}</strong>
+  </div>
+</section>
+
+<section class="features-grid">
+  <div class="card">
+    <h2>Пользователи</h2>
+    <p>
+      Просмотр учетных записей студентов, сотрудников и администратора,
+      а также контроль распределения ролей пользователей.
+    </p>
+    <a class="btn" href="{{ url_for('admin.users') }}">Открыть пользователей</a>
+  </div>
+
+  <div class="card">
+    <h2>Категории заявок</h2>
+    <p>
+      Просмотр справочника категорий обращений, используемых студентами
+      при создании новых заявок.
+    </p>
+    <a class="btn secondary" href="{{ url_for('admin.categories') }}">Открыть категории</a>
+  </div>
+
+  <div class="card">
+    <h2>Отчетность</h2>
+    <p>
+      Формирование отчета по заявкам в формате XLSX для анализа обращений
+      и использования в документации.
+    </p>
+    <a class="btn" href="{{ url_for('admin.export_requests') }}">Скачать XLSX</a>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Административные функции</h2>
+  <ul class="feature-list">
+    <li>контроль общего количества пользователей;</li>
+    <li>просмотр количества созданных и закрытых заявок;</li>
+    <li>работа со справочником категорий обращений;</li>
+    <li>выгрузка отчета по заявкам в табличном формате;</li>
+    <li>поддержка демонстрационного сценария для защиты проекта.</li>
+  </ul>
+</section>
 {% endblock %}
