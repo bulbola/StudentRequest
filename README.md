@@ -86,7 +86,7 @@ py -m venv .venv
 
 Для Windows PowerShell:
 
-```bash
+```powershell
 .venv\Scripts\activate
 ```
 

@@ -1,7 +1,70 @@
-{% extends 'base.html' %}{% block content %}
-<h1>Личный кабинет студента</h1>
-<a class="btn" href="{{ url_for('student.create_request') }}">Создать заявку</a>
-<table><tr><th>ID</th><th>Тема</th><th>Категория</th><th>Статус</th><th></th></tr>
-{% for r in requests %}<tr><td>{{ r.id }}</td><td>{{ r.title }}</td><td>{{ r.category.name }}</td><td><span class="badge">{{ r.status }}</span></td><td><a href="{{ url_for('student.request_detail', request_id=r.id) }}">Открыть</a></td></tr>{% endfor %}
-</table>
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="page-header">
+  <div>
+    <h1>Личный кабинет студента</h1>
+    <p class="muted">
+      В этом разделе студент может создавать обращения, отслеживать их статус
+      и просматривать историю обработки заявок.
+    </p>
+  </div>
+  <a class="btn" href="{{ url_for('student.create_request') }}">Создать заявку</a>
+</section>
+
+<section class="stats-grid">
+  <div class="stat-card">
+    <span>Всего заявок</span>
+    <strong>{{ requests|length }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Новые</span>
+    <strong>{{ requests|selectattr('status', 'equalto', 'created')|list|length }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>В работе</span>
+    <strong>{{ requests|selectattr('status', 'equalto', 'in_progress')|list|length }}</strong>
+  </div>
+  <div class="stat-card">
+    <span>Закрытые</span>
+    <strong>{{ requests|selectattr('status', 'equalto', 'closed')|list|length }}</strong>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Мои заявки</h2>
+
+  {% if requests %}
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Тема</th>
+      <th>Категория</th>
+      <th>Приоритет</th>
+      <th>Статус</th>
+      <th>Дата создания</th>
+      <th></th>
+    </tr>
+    {% for r in requests %}
+    <tr>
+      <td>{{ r.id }}</td>
+      <td>{{ r.title }}</td>
+      <td>{{ r.category.name }}</td>
+      <td>{{ r.priority }}</td>
+      <td><span class="badge">{{ r.status }}</span></td>
+      <td>{{ r.created_at.strftime('%d.%m.%Y') }}</td>
+      <td>
+        <a href="{{ url_for('student.request_detail', request_id=r.id) }}">Открыть</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% else %}
+  <div class="empty-state">
+    <h3>Заявок пока нет</h3>
+    <p>Создайте первую заявку, чтобы начать работу с системой.</p>
+    <a class="btn" href="{{ url_for('student.create_request') }}">Создать заявку</a>
+  </div>
+  {% endif %}
+</section>
 {% endblock %}
