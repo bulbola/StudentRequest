@@ -1,5 +1,23 @@
 {% extends 'base.html' %}{% block content %}
 <h1>Вход в систему</h1>
+<p>Для демонстрации работы StudentRequest используйте одну из тестовых учетных записей.</p>
+
+<section class="card">
+  <h2>Тестовые учетные записи</h2>
+  <table>
+    <thead>
+      <tr><th>Роль</th><th>Email</th><th>Пароль</th><th>Что проверить</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Студент</td><td><code>student@example.com</code></td><td><code>student123</code></td><td>создание заявки, просмотр статуса, комментарии, повторная подача</td></tr>
+      <tr><td>Сотрудник</td><td><code>employee@example.com</code></td><td><code>employee123</code></td><td>очередь заявок, взятие в работу, смена статуса, отклонение</td></tr>
+      <tr><td>Руководитель</td><td><code>manager@example.com</code></td><td><code>manager123</code></td><td>статистика, SLA, просроченные заявки, журнал действий</td></tr>
+      <tr><td>Администратор</td><td><code>admin@example.com</code></td><td><code>admin123</code></td><td>пользователи, категории, настройки, XLSX-экспорт</td></tr>
+    </tbody>
+  </table>
+  <small>Руководитель имеет доступ к аналитике, но не имеет доступа к административной панели управления пользователями и категориями.</small>
+</section>
+
 <form method="post">
   <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
   <label>Email</label><input name="email" type="email" maxlength="120" required>
