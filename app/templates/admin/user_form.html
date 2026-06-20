@@ -1,0 +1,15 @@
+{% extends 'base.html' %}{% block content %}
+<h1>{% if user %}Редактирование пользователя{% else %}Создание пользователя{% endif %}</h1>
+<form method="post">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <label>ФИО</label><input name="full_name" value="{{ user.full_name if user else '' }}" required maxlength="180">
+  {% if not user %}<label>Email</label><input name="email" type="email" required maxlength="120">{% else %}<p><b>Email:</b> {{ user.email }}</p>{% endif %}
+  <label>Роль</label><select name="role"><option value="student" {% if user and user.role=='student' %}selected{% endif %}>Студент</option><option value="employee" {% if user and user.role=='employee' %}selected{% endif %}>Сотрудник</option><option value="manager" {% if user and user.role=='manager' %}selected{% endif %}>Руководитель</option><option value="admin" {% if user and user.role=='admin' %}selected{% endif %}>Администратор</option></select>
+  <label>Пароль {% if user %}(заполните только для смены){% endif %}</label><input name="password" type="password" minlength="8" {% if not user %}required{% endif %}>
+  <label><input type="checkbox" name="is_active_flag" {% if not user or user.is_active %}checked{% endif %}> Активен</label>
+  <h2>Профиль сотрудника</h2><label>Должность</label><input name="position" value="{{ user.employee_profile.position if user and user.employee_profile else 'специалист' }}"><label>Подразделение</label><input name="department" value="{{ user.employee_profile.department if user and user.employee_profile else 'структурное подразделение Университета' }}"><label><input type="checkbox" name="can_process_all" {% if user and user.employee_profile and user.employee_profile.can_process_all %}checked{% endif %}> Может обрабатывать все категории</label>
+  <label>Категории сотрудника</label><select name="category_ids" multiple>{% set selected = user.employee_categories|map(attribute='category_id')|list if user else [] %}{% for c in categories %}<option value="{{ c.id }}" {% if c.id in selected %}selected{% endif %}>{{ c.name }}</option>{% endfor %}</select>
+  <h2>Профиль студента</h2><label>Группа</label><input name="group_name" value="{{ user.student_profile.group_name if user and user.student_profile else 'Не указана' }}"><label>Курс</label><input name="course" type="number" min="1" max="6" value="{{ user.student_profile.course if user and user.student_profile else 1 }}"><label>Направление подготовки</label><input name="direction" value="{{ user.student_profile.direction if user and user.student_profile else 'Бизнес-информатика' }}">
+  <button class="btn" type="submit">Сохранить</button>
+</form>
+{% endblock %}

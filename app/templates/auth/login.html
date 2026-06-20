@@ -1,47 +1,9 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<div class="login-layout">
-  <section class="card login-card">
-    <h1>Вход в систему</h1>
-    <p class="muted">
-      Введите учетные данные пользователя для доступа к личному кабинету.
-    </p>
-
-    <form method="post">
-      <label>Email</label>
-      <input name="email" type="email" placeholder="user@example.com" required>
-
-      <label>Пароль</label>
-      <input name="password" type="password" placeholder="Введите пароль" required>
-
-      <button class="btn" type="submit">Войти</button>
-    </form>
-  </section>
-
-  <section class="card demo-card">
-    <h2>Тестовые учетные записи</h2>
-    <p class="muted">
-      Для демонстрации работы системы можно использовать следующие роли.
-    </p>
-
-    <div class="demo-account">
-      <strong>Администратор</strong>
-      <span>admin@example.com</span>
-      <span>admin123</span>
-    </div>
-
-    <div class="demo-account">
-      <strong>Сотрудник</strong>
-      <span>employee@example.com</span>
-      <span>employee123</span>
-    </div>
-
-    <div class="demo-account">
-      <strong>Студент</strong>
-      <span>student@example.com</span>
-      <span>student123</span>
-    </div>
-  </section>
-</div>
+{% extends 'base.html' %}{% block content %}
+<h1>Вход в систему</h1>
+<form method="post">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <label>Email</label><input name="email" type="email" maxlength="120" required>
+  <label>Пароль</label><input name="password" type="password" required>
+  <button class="btn" type="submit">Войти</button>
+</form>
 {% endblock %}

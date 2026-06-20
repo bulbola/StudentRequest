@@ -1,0 +1,17 @@
+Name                     Stmts   Miss  Cover   Missing
+------------------------------------------------------
+app/__init__.py             43      1    98%   21
+app/models.py              114      0   100%
+app/routes_admin.py        159     69    57%   18-26, 33, 38, 54-56, 72, 74, 76, 78, 80, 82-84, 100-123, 130, 142-143, 158-172, 179-199
+app/routes_auth.py          34      9    74%   15, 20-21, 28, 35-39
+app/routes_employee.py     139     38    73%   19-30, 35, 58-64, 118-127, 134-137, 156, 171-173
+app/routes_main.py          17      5    71%   15-19
+app/routes_student.py       92     12    87%   30-31, 47, 67-72, 89, 102, 104
+app/security.py             46      4    91%   57-60
+app/services.py             33      0   100%
+app/validators.py           22      4    82%   19, 21, 25, 27
+tests/conftest.py            5      1    80%   6
+tests/test_extended.py      16      0   100%
+tests/test_smoke.py        181      0   100%
+------------------------------------------------------
+TOTAL                      901    143    84%

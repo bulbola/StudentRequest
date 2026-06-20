@@ -1,84 +1,11 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<section class="page-header">
-  <div>
-    <h1>Панель сотрудника</h1>
-    <p class="muted">
-      В этом разделе сотрудник структурного подразделения просматривает поступившие
-      заявки студентов, выбирает обращения для обработки и контролирует их статусы.
-    </p>
-  </div>
-</section>
-
-<section class="stats-grid">
-  <div class="stat-card">
-    <span>Всего заявок</span>
-    <strong>{{ requests|length }}</strong>
-  </div>
-  <div class="stat-card">
-    <span>Новые</span>
-    <strong>{{ requests|selectattr('status', 'equalto', 'created')|list|length }}</strong>
-  </div>
-  <div class="stat-card">
-    <span>В работе</span>
-    <strong>{{ requests|selectattr('status', 'equalto', 'in_progress')|list|length }}</strong>
-  </div>
-  <div class="stat-card">
-    <span>Закрытые</span>
-    <strong>{{ requests|selectattr('status', 'equalto', 'closed')|list|length }}</strong>
-  </div>
-</section>
-
-<section class="card">
-  <div class="table-header">
-    <div>
-      <h2>Очередь заявок</h2>
-      <p class="muted">
-        Список обращений студентов, доступных для обработки.
-      </p>
-    </div>
-
-    <div class="filter-links">
-      <a href="{{ url_for('employee.dashboard') }}">Все</a>
-      <a href="{{ url_for('employee.dashboard', status='created') }}">Новые</a>
-      <a href="{{ url_for('employee.dashboard', status='in_progress') }}">В работе</a>
-      <a href="{{ url_for('employee.dashboard', status='closed') }}">Закрытые</a>
-    </div>
-  </div>
-
-  {% if requests %}
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Студент</th>
-      <th>Тема</th>
-      <th>Категория</th>
-      <th>Приоритет</th>
-      <th>Статус</th>
-      <th>Дата</th>
-      <th></th>
-    </tr>
-    {% for r in requests %}
-    <tr>
-      <td>{{ r.id }}</td>
-      <td>{{ r.student.full_name }}</td>
-      <td>{{ r.title }}</td>
-      <td>{{ r.category.name }}</td>
-      <td>{{ r.priority }}</td>
-      <td><span class="badge">{{ r.status }}</span></td>
-      <td>{{ r.created_at.strftime('%d.%m.%Y') }}</td>
-      <td>
-        <a href="{{ url_for('employee.process_request', request_id=r.id) }}">Обработать</a>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
-  {% else %}
-  <div class="empty-state">
-    <h3>Заявок нет</h3>
-    <p>В выбранной категории пока нет обращений для обработки.</p>
-  </div>
-  {% endif %}
-</section>
+{% extends 'base.html' %}{% block content %}
+<h1>{% if current_user.role == 'manager' %}Панель руководителя{% else %}Очередь заявок{% endif %}</h1>
+<p><a class="btn secondary" href="?status=created">Созданные</a> <a class="btn secondary" href="?status=in_progress">В работе</a> <a class="btn secondary" href="?status=closed">Закрытые</a> {% if current_user.role == 'manager' %}<a class="btn" href="{{ url_for('employee.stats') }}">Статистика</a>{% endif %}</p>
+<table><tr><th>ID</th><th>Тема</th><th>Категория</th><th>Статус</th><th>SLA</th><th>Исполнитель</th><th>Действие</th></tr>
+{% for r in requests %}<tr class="{% if r.sla_due_at and r.sla_due_at < now and r.status in ['created','in_progress','needs_info'] %}overdue{% endif %}">
+  <td>{{ r.id }}</td><td>{{ r.title }}</td><td>{{ r.category.name }}</td><td>{{ r.status }}</td>
+  <td>{{ r.sla_due_at.strftime('%d.%m.%Y %H:%M') if r.sla_due_at else '-' }}</td>
+  <td>{{ r.assigned_employee.full_name if r.assigned_employee else '-' }}</td>
+  <td>{% if current_user.role == 'employee' %}<a class="btn" href="{{ url_for('employee.process_request', request_id=r.id) }}">Открыть</a>{% else %}-{% endif %}</td>
+</tr>{% endfor %}</table>
 {% endblock %}

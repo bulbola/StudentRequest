@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block content %}
+<h1>{% if category %}Редактирование категории{% else %}Создание категории{% endif %}</h1>
+<form method="post"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><label>Название</label><input name="name" value="{{ category.name if category else '' }}" required maxlength="120"><label>Описание</label><textarea name="description" maxlength="1000">{{ category.description if category else '' }}</textarea><label><input type="checkbox" name="is_active" {% if not category or category.is_active %}checked{% endif %}> Активна</label><button class="btn" type="submit">Сохранить</button></form>
+{% endblock %}

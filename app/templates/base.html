@@ -2,22 +2,30 @@
 <html lang="ru">
 <head>
   <meta charset="utf-8">
-  <title>{{ title or 'StudentRequest' }}</title>
-  <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='favicon.svg') }}">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>StudentRequest</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-  <div class="header">
-    <strong>StudentRequest</strong>
-    <nav>
-      <a href="{{ url_for('main.index') }}">Главная</a>
-      <a href="{{ url_for('main.help_page') }}">Справка</a>
-      {% if current_user.is_authenticated %}<a href="{{ url_for('auth.logout') }}">Выход</a>{% else %}<a href="{{ url_for('auth.login') }}">Вход</a>{% endif %}
-    </nav>
-  </div>
-  <div class="container">
-    {% with messages = get_flashed_messages() %}{% if messages %}{% for m in messages %}<div class="card">{{ m }}</div>{% endfor %}{% endif %}{% endwith %}
-    {% block content %}{% endblock %}
-  </div>
+<header class="header">
+  <a href="{{ url_for('main.index') }}">StudentRequest</a>
+  <nav>
+    <a href="{{ url_for('main.help_page') }}">Справка</a>
+    {% if current_user.is_authenticated %}
+      <a href="{{ url_for('main.dashboard') }}">Кабинет</a>
+      <a href="{{ url_for('auth.logout') }}">Выход</a>
+    {% else %}
+      <a href="{{ url_for('auth.login') }}">Вход</a>
+    {% endif %}
+  </nav>
+</header>
+<main class="container">
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div class="flash">{% for m in messages %}<p>{{ m }}</p>{% endfor %}</div>
+    {% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
 </body>
 </html>

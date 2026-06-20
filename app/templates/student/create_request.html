@@ -1,72 +1,13 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<section class="page-header">
-  <div>
-    <h1>Создание новой заявки</h1>
-    <p class="muted">
-      Заполните форму обращения. Укажите категорию, тему, описание и приоритет заявки.
-      При необходимости можно прикрепить файл.
-    </p>
-  </div>
-  <a class="btn secondary" href="{{ url_for('student.dashboard') }}">Назад к заявкам</a>
-</section>
-
-<div class="form-layout">
-  <section class="card">
-    <h2>Данные заявки</h2>
-
-    <form method="post" enctype="multipart/form-data">
-      <label>Категория обращения</label>
-      <select name="category_id" required>
-        {% for category in categories %}
-        <option value="{{ category.id }}">{{ category.name }}</option>
-        {% endfor %}
-      </select>
-
-      <label>Тема заявки</label>
-      <input
-        name="title"
-        placeholder="Например: уточнение по документам"
-        required
-      >
-
-      <label>Описание обращения</label>
-      <textarea
-        name="description"
-        rows="6"
-        placeholder="Опишите вопрос или проблему подробнее"
-        required
-      ></textarea>
-
-      <label>Приоритет</label>
-      <select name="priority">
-        <option value="low">Низкий</option>
-        <option value="normal" selected>Средний</option>
-        <option value="high">Высокий</option>
-      </select>
-
-      <label>Прикрепить файл</label>
-      <input name="file" type="file">
-
-      <button class="btn" type="submit">Создать заявку</button>
-    </form>
-  </section>
-
-  <aside class="card info-card">
-    <h2>Подсказка</h2>
-    <p>
-      Чем точнее заполнена заявка, тем быстрее сотрудник сможет ее обработать.
-      В описании рекомендуется указать суть обращения, сроки и дополнительные детали.
-    </p>
-
-    <h3>Примеры категорий</h3>
-    <ul class="feature-list">
-      <li>Практика — вопросы по индивидуальному заданию и отчету.</li>
-      <li>Документы — справки, заявления и отчетные материалы.</li>
-      <li>Учебный процесс — консультации, расписание и дисциплины.</li>
-      <li>Техническая поддержка — проблемы с доступом или загрузкой файлов.</li>
-    </ul>
-  </aside>
-</div>
+{% extends 'base.html' %}{% block content %}
+<h1>Создание заявки</h1>
+<form method="post" enctype="multipart/form-data">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <label>Категория</label><select name="category_id" required>{% for c in categories %}<option value="{{ c.id }}">{{ c.name }}</option>{% endfor %}</select>
+  <label>Тема</label><input name="title" maxlength="180" minlength="5" required>
+  <label>Описание</label><textarea name="description" rows="7" maxlength="4000" minlength="20" required></textarea>
+  <label>Приоритет</label><select name="priority"><option value="low">Низкий</option><option value="normal" selected>Обычный</option><option value="high">Высокий</option></select>
+  <label>Файл</label><input type="file" name="file" accept=".pdf,.doc,.docx,.xls,.xlsx,.png,.jpg,.jpeg">
+  <small>Максимальный размер файла - 5 МБ.</small>
+  <button class="btn" type="submit">Отправить</button>
+</form>
 {% endblock %}

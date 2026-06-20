@@ -1,102 +1,26 @@
-{% extends 'base.html' %}
-
-{% block content %}
-<section class="page-header">
-  <div>
-    <h1>Обработка заявки №{{ req.id }}</h1>
-    <p class="muted">
-      На этой странице сотрудник просматривает обращение студента,
-      изменяет статус заявки и добавляет комментарий по результату обработки.
-    </p>
-  </div>
-  <a class="btn secondary" href="{{ url_for('employee.dashboard') }}">Назад к очереди</a>
-</section>
-
-<div class="form-layout">
-  <section class="card">
-    <h2>Информация о заявке</h2>
-
-    <div class="detail-list">
-      <div>
-        <span>Студент</span>
-        <strong>{{ req.student.full_name }}</strong>
-      </div>
-
-      <div>
-        <span>Тема</span>
-        <strong>{{ req.title }}</strong>
-      </div>
-
-      <div>
-        <span>Категория</span>
-        <strong>{{ req.category.name }}</strong>
-      </div>
-
-      <div>
-        <span>Приоритет</span>
-        <strong>{{ req.priority }}</strong>
-      </div>
-
-      <div>
-        <span>Текущий статус</span>
-        <strong><span class="badge">{{ req.status }}</span></strong>
-      </div>
-
-      <div>
-        <span>Дата создания</span>
-        <strong>{{ req.created_at.strftime('%d.%m.%Y') }}</strong>
-      </div>
-    </div>
-
-    <h3>Описание обращения</h3>
-    <p class="request-description">
-      {{ req.description }}
-    </p>
-  </section>
-
-  <section class="card">
-    <h2>Изменение статуса</h2>
-
-    <form method="post">
-      <label>Новый статус</label>
-      <select name="status">
-        <option value="created" {% if req.status == 'created' %}selected{% endif %}>Создана</option>
-        <option value="in_progress" {% if req.status == 'in_progress' %}selected{% endif %}>Принята в работу</option>
-        <option value="need_info" {% if req.status == 'need_info' %}selected{% endif %}>Требует уточнения</option>
-        <option value="processed" {% if req.status == 'processed' %}selected{% endif %}>Обработана</option>
-        <option value="closed" {% if req.status == 'closed' %}selected{% endif %}>Закрыта</option>
-        <option value="rejected" {% if req.status == 'rejected' %}selected{% endif %}>Отклонена</option>
-      </select>
-
-      <label>Комментарий сотрудника</label>
-      <textarea
-        name="comment_text"
-        rows="6"
-        placeholder="Введите комментарий для студента"
-      ></textarea>
-
-      <button class="btn" type="submit">Сохранить изменения</button>
-    </form>
-  </section>
+{% extends 'base.html' %}{% block content %}
+<h1>Обработка заявки №{{ req.id }}</h1>
+<div class="card">
+  <p><b>Тема:</b> {{ req.title }}</p>
+  <p><b>Описание:</b> {{ req.description }}</p>
+  <p><b>Статус:</b> {{ req.status }}</p>
+  <p><b>Блокировка:</b> {{ req.locked_by.full_name if req.locked_by else 'не взята в работу' }}</p>
 </div>
-
-<section class="card">
-  <h2>Комментарии по заявке</h2>
-
-  {% if comments %}
-    <div class="comments-list">
-      {% for comment in comments %}
-      <div class="comment-card">
-        <div class="comment-meta">
-          <strong>{{ comment.user.full_name }}</strong>
-          <span>{{ comment.created_at.strftime('%d.%m.%Y %H:%M') }}</span>
-        </div>
-        <p>{{ comment.comment_text }}</p>
-      </div>
-      {% endfor %}
-    </div>
-  {% else %}
-    <p class="muted">Комментариев по заявке пока нет.</p>
-  {% endif %}
-</section>
+{% if not req.locked_by_id or req.locked_by_id == current_user.id %}
+<form method="post" action="{{ url_for('employee.take_request', request_id=req.id) }}">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <button class="btn secondary" type="submit">Взять в работу</button>
+</form>
+{% endif %}
+<form method="post">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <label>Статус</label><select name="status">
+    <option value="in_progress">В работе</option><option value="needs_info">Требует уточнения</option><option value="processed">Обработана</option><option value="closed">Закрыта</option><option value="rejected">Отклонена</option>
+  </select>
+  <label>Причина отклонения (обязательна для статуса «Отклонена»)</label><textarea name="rejected_reason" maxlength="500" rows="2"></textarea>
+  <label>Комментарий</label><textarea name="comment_text" rows="5" maxlength="2000"></textarea>
+  <button class="btn" type="submit">Сохранить</button>
+</form>
+<h2>Комментарии</h2>{% for c in comments %}<div class="card"><b>{{ c.user.full_name }}</b><p>{{ c.comment_text }}</p></div>{% endfor %}
+<h2>История статусов</h2><table><tr><th>Было</th><th>Стало</th><th>Причина</th><th>Дата</th></tr>{% for h in history %}<tr><td>{{ h.old_status or '-' }}</td><td>{{ h.new_status }}</td><td>{{ h.change_reason or '-' }}</td><td>{{ h.changed_at.strftime('%d.%m.%Y %H:%M') }}</td></tr>{% endfor %}</table>
 {% endblock %}

@@ -1,34 +1,13 @@
-# Python
-__pycache__/
-*.py[cod]
-*.pyo
-*.pyd
-.pytest_cache/
-.coverage
-htmlcov/
-
-# Virtualenv
 .venv/
-venv/
-env/
-
-# Flask / local data
-instance/*.db
-*.sqlite
+__pycache__/
+*.pyc
 *.sqlite3
+instance/
 .env
-
-# Uploads generated during local testing
+.DS_Store
 app/static/uploads/*
 !app/static/uploads/.gitkeep
 
-# IDE / OS
-.idea/
-.vscode/
-.DS_Store
-Thumbs.db
-
-# Build artifacts
-dist/
-build/
-*.egg-info/
+.coverage
+htmlcov/
+.pytest_cache/

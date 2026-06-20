@@ -1,0 +1,9 @@
+{% extends 'base.html' %}{% block content %}
+<h1>Статистика руководителя подразделения</h1>
+<form method="post" action="{{ url_for('employee.check_sla_now') }}"><input type="hidden" name="_csrf_token" value="{{ csrf_token() }}"><button class="btn" type="submit">Проверить SLA и выполнить эскалацию</button></form>
+<div class="card">Всего заявок: {{ total }}</div>
+<div class="card">Просрочено по SLA: {{ overdue }}</div>
+<div class="card">Записей журнала действий: {{ log_count }}</div>
+<h2>По статусам</h2><table><tr><th>Статус</th><th>Количество</th></tr>{% for status, count in by_status.items() %}<tr><td>{{ status }}</td><td>{{ count }}</td></tr>{% endfor %}</table>
+<h2>По категориям</h2><table><tr><th>Категория</th><th>Количество</th></tr>{% for name, count in by_category.items() %}<tr><td>{{ name }}</td><td>{{ count }}</td></tr>{% endfor %}</table>
+{% endblock %}

@@ -1,5 +1,20 @@
 {% extends 'base.html' %}{% block content %}
 <h1>Заявка №{{ req.id }}</h1>
-<div class="card"><h2>{{ req.title }}</h2><p>{{ req.description }}</p><p>Статус: <span class="badge">{{ req.status }}</span></p></div>
-<h2>Комментарии</h2>{% for c in comments %}<div class="card"><b>{{ c.user.full_name }}</b><p>{{ c.comment_text }}</p></div>{% endfor %}
+<div class="card">
+  <p><b>Тема:</b> {{ req.title }}</p>
+  <p><b>Категория:</b> {{ req.category.name }}</p>
+  <p><b>Статус:</b> <span class="badge">{{ req.status }}</span></p>
+  <p><b>SLA до:</b> {{ req.sla_due_at.strftime('%d.%m.%Y %H:%M') if req.sla_due_at else '-' }}</p>
+  <p><b>Описание:</b> {{ req.description }}</p>
+  {% if req.rejected_reason %}<p><b>Причина отклонения:</b> {{ req.rejected_reason }}</p>{% endif %}
+</div>
+{% if req.status == 'rejected' %}
+<form method="post" action="{{ url_for('student.resubmit_request', request_id=req.id) }}">
+  <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+  <label>Комментарий к повторной подаче</label><textarea name="comment_text" rows="3"></textarea>
+  <button class="btn" type="submit">Подать повторно</button>
+</form>
+{% endif %}
+<h2>Комментарии</h2>{% for c in comments %}<div class="card"><b>{{ c.user.full_name }}</b><p>{{ c.comment_text }}</p></div>{% else %}<p>Комментариев пока нет.</p>{% endfor %}
+<h2>История статусов</h2><table><tr><th>Старый статус</th><th>Новый статус</th><th>Причина</th><th>Дата</th></tr>{% for h in history %}<tr><td>{{ h.old_status or '-' }}</td><td>{{ h.new_status }}</td><td>{{ h.change_reason or '-' }}</td><td>{{ h.changed_at.strftime('%d.%m.%Y %H:%M') }}</td></tr>{% endfor %}</table>
 {% endblock %}
